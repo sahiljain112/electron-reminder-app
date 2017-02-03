@@ -1,0 +1,85 @@
+
+body, html {
+    font-family: Helvetica;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.MainAppTile {
+  width: 25em;
+  height: 12em;
+  background-color: rgb(255, 255, 255);
+  margin: 0 auto;
+  position: relative;
+  top: 13em;
+  box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+}
+
+.ReminderText {
+  font-size: 28px;
+  display: inline-block;
+  position: relative;
+  top: 5rem;
+  width: 25rem;
+  height: 4em;
+  text-align: center;
+  font-weight: initial;
+  text-shadow: 3px 3px 4px rgba(150, 150, 150, 0.65);
+}
+
+
+.slideRight{
+	animation-name: slideRight;
+	-webkit-animation-name: slideRight;
+
+	animation-duration: 1s;
+	-webkit-animation-duration: 1s;
+
+	animation-timing-function: ease-in-out;
+	-webkit-animation-timing-function: ease-in-out;
+
+	visibility: visible !important;
+}
+
+@keyframes slideRight {
+	0% {
+		transform: translateX(-150%);
+	}
+	50%{
+		transform: translateX(8%);
+	}
+	65%{
+		transform: translateX(-4%);
+	}
+	80%{
+		transform: translateX(4%);
+	}
+	95%{
+		transform: translateX(-2%);
+	}
+	100% {
+		transform: translateX(0%);
+	}
+}
+
+@-webkit-keyframes slideRight {
+	0% {
+		-webkit-transform: translateX(-150%);
+	}
+	50%{
+		-webkit-transform: translateX(8%);
+	}
+	65%{
+		-webkit-transform: translateX(-4%);
+	}
+	80%{
+		-webkit-transform: translateX(4%);
+	}
+	95%{
+		-webkit-transform: translateX(-2%);
+	}
+	100% {
+		-webkit-transform: translateX(0%);
+	}
+}
