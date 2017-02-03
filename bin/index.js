@@ -25,47 +25,72 @@ var App = function (_Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
     _this.state = {
-      ReminderText: true
+      reminder: false
     };
     _this.timer = _this.timer.bind(_this);
+    _this.timeKeeper = _this.timeKeeper.bind(_this);
     return _this;
   }
 
   _createClass(App, [{
     key: 'timer',
     value: function timer(ms) {
+      return new Promise(function (resolve) {
+        return setTimeout(resolve, ms);
+      });
+    }
+  }, {
+    key: 'timeKeeper',
+    value: function timeKeeper(secondsLeft) {
       var _this2 = this;
 
-      return new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve(_this2.setState({ ReminderText: !_this2.state.ReminderText }));
-        }, ms);
+      this.timer(1000).then(function () {
+        console.log(secondsLeft);
+        if (secondsLeft === 0) _this2.setState({ reminder: !_this2.state.reminder }, function () {
+          console.log('reminder', _this2.state.reminder);
+          var _props = _this2.props,
+              resetTime = _props.resetTime,
+              reminderTime = _props.reminderTime;
+
+          _this2.state.reminder ? _this2.timeKeeper(resetTime) : _this2.timeKeeper(reminderTime);
+        });else {
+          secondsLeft = secondsLeft - 1;
+          _this2.timeKeeper(secondsLeft);
+        }
       });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var reminderTime = this.props.reminderTime;
+
+      this.timeKeeper(reminderTime);
     }
   }, {
     key: 'render',
     value: function render() {
-      this.timer(2000);
+      var timer = this.state;
       var ReminderText = _react2.default.createElement(
         'div',
-        { className: 'MainAppTile' },
+        { className: 'main-title' },
         _react2.default.createElement(
           'div',
-          { className: 'ReminderText' },
+          { className: 'reminder-text' },
           _react2.default.createElement(
             'span',
             null,
-            'It\'s Time To Dance'
+            ' ',
+            timer
           )
         )
       );
 
       var Timer = _react2.default.createElement(
         'div',
-        { className: 'MainAppTile' },
+        { className: 'main-title' },
         _react2.default.createElement(
           'div',
-          { className: 'ReminderText' },
+          { className: 'reminder-text' },
           _react2.default.createElement(
             'span',
             null,
@@ -76,7 +101,7 @@ var App = function (_Component) {
 
       return _react2.default.createElement(
         'div',
-        null,
+        { className: 'app' },
         this.state.ReminderText ? ReminderText : Timer
       );
     }
@@ -85,4 +110,4 @@ var App = function (_Component) {
   return App;
 }(_react.Component);
 
-(0, _reactDom.render)(_react2.default.createElement(App, null), document.querySelector('#root'));
+(0, _reactDom.render)(_react2.default.createElement(App, { resetTime: 5, reminderTime: 3 }), document.querySelector('#root'));
