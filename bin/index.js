@@ -8,8 +8,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = require('react-dom');
 
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21,19 +19,65 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var App = function (_Component) {
   _inherits(App, _Component);
 
-  function App() {
+  function App(props) {
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+    _this.state = {
+      ReminderText: true
+    };
+    _this.timer = _this.timer.bind(_this);
+    return _this;
   }
 
   _createClass(App, [{
+    key: 'timer',
+    value: function timer(ms) {
+      var _this2 = this;
+
+      return new Promise(function (resolve) {
+        setTimeout(function () {
+          resolve(_this2.setState({ ReminderText: !_this2.state.ReminderText }));
+        }, ms);
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
+      this.timer(2000);
+      var ReminderText = _react2.default.createElement(
+        'div',
+        { className: 'MainAppTile' },
+        _react2.default.createElement(
+          'div',
+          { className: 'ReminderText' },
+          _react2.default.createElement(
+            'span',
+            null,
+            'It\'s Time To Dance'
+          )
+        )
+      );
+
+      var Timer = _react2.default.createElement(
+        'div',
+        { className: 'MainAppTile' },
+        _react2.default.createElement(
+          'div',
+          { className: 'ReminderText' },
+          _react2.default.createElement(
+            'span',
+            null,
+            'Heldlo'
+          )
+        )
+      );
+
       return _react2.default.createElement(
         'div',
         null,
-        'WIP'
+        this.state.ReminderText ? ReminderText : Timer
       );
     }
   }]);
@@ -41,4 +85,4 @@ var App = function (_Component) {
   return App;
 }(_react.Component);
 
-_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('root'));
+(0, _reactDom.render)(_react2.default.createElement(App, null), document.querySelector('#root'));
