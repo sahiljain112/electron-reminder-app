@@ -17,7 +17,7 @@ var indexURL = _path2.default.join('file://', dir, 'index.html');
 console.log(indexURL);
 var mb = (0, _menubar2.default)({
   width: 400,
-  height: 200,
+  height: 180,
   dir: dir,
   showDockIcon: true
 });
@@ -26,7 +26,7 @@ mb.on('ready', function () {
   console.log('Menu bar');
   mb.showWindow();
   mb.app.dock.hide();
-  mb.window.toggleDevTools();
+  //mb.window.toggleDevTools()
 });
 
 mb.on('after-hide', function () {

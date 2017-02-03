@@ -3,20 +3,18 @@ body, html {
     font-family: Helvetica;
     margin: 0;
     padding: 0;
-    height: 100%;
 }
 
-.main-title {
+.app {
   width: 25em;
   height: 12em;
   background-color: rgb(255, 255, 255);
   margin: 0 auto;
   position: relative;
-  top: 13em;
   box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
 }
 
-.reminder-text {
+.display-content {
   font-size: 28px;
   display: inline-block;
   position: relative;
@@ -29,7 +27,7 @@ body, html {
 }
 
 
-.slideRight{
+.slide-right{
 	animation-name: slideRight;
 	-webkit-animation-name: slideRight;
 

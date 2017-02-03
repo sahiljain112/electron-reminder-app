@@ -8,7 +8,7 @@ const indexURL = path.join('file://', dir ,'index.html')
 console.log(indexURL)
 const mb = menubar({
   width: 400,
-  height: 200,
+  height: 180,
   dir,
   showDockIcon: true
 })
@@ -17,7 +17,7 @@ mb.on('ready', () => {
   console.log('Menu bar')
   mb.showWindow()
   mb.app.dock.hide()
-  mb.window.toggleDevTools()
+  //mb.window.toggleDevTools()
 })
 
 mb.on('after-hide', () => {

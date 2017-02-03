@@ -2,6 +2,8 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -16,6 +18,39 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var getFormattedTime = function getFormattedTime(secondsLeft) {
+  var mins = Math.floor(secondsLeft / 60);
+  secondsLeft = secondsLeft % 60;
+  return [mins, secondsLeft];
+};
+
+var DisplayText = function DisplayText(props) {
+  return _react2.default.createElement(
+    'div',
+    { className: 'display-content slide-right' },
+    props.message
+  );
+};
+
+var DisplayClock = function DisplayClock(props) {
+  var secondsLeft = props.secondsLeft;
+
+  var _getFormattedTime = getFormattedTime(secondsLeft),
+      _getFormattedTime2 = _slicedToArray(_getFormattedTime, 2),
+      mins = _getFormattedTime2[0],
+      secs = _getFormattedTime2[1];
+
+  console.log('Mins and secs', mins, secs);
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'display-content slide-right' },
+    mins,
+    ' : ',
+    secs
+  );
+};
+
 var App = function (_Component) {
   _inherits(App, _Component);
 
@@ -25,7 +60,8 @@ var App = function (_Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
     _this.state = {
-      reminder: false
+      reminder: false,
+      secondsLeft: props.reminderTime
     };
     _this.timer = _this.timer.bind(_this);
     _this.timeKeeper = _this.timeKeeper.bind(_this);
@@ -46,16 +82,32 @@ var App = function (_Component) {
 
       this.timer(1000).then(function () {
         console.log(secondsLeft);
-        if (secondsLeft === 0) _this2.setState({ reminder: !_this2.state.reminder }, function () {
-          console.log('reminder', _this2.state.reminder);
-          var _props = _this2.props,
-              resetTime = _props.resetTime,
-              reminderTime = _props.reminderTime;
+        if (secondsLeft === 0) {
+          (function () {
+            var _props = _this2.props,
+                resetTime = _props.resetTime,
+                reminderTime = _props.reminderTime;
 
-          _this2.state.reminder ? _this2.timeKeeper(resetTime) : _this2.timeKeeper(reminderTime);
-        });else {
+            if (_this2.state.reminder) {
+              _this2.setState({
+                reminder: !_this2.state.reminder,
+                secondsLeft: reminderTime
+              }, function () {
+                _this2.timeKeeper(reminderTime);
+              });
+            } else {
+              _this2.setState({
+                reminder: !_this2.state.reminder,
+                secondsLeft: reminderTime
+              }, function () {
+                _this2.timeKeeper(resetTime);
+              });
+            }
+          })();
+        } else {
           secondsLeft = secondsLeft - 1;
           _this2.timeKeeper(secondsLeft);
+          _this2.setState({ secondsLeft: _this2.state.secondsLeft - 1 });
         }
       });
     }
@@ -69,40 +121,20 @@ var App = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var timer = this.state;
-      var ReminderText = _react2.default.createElement(
-        'div',
-        { className: 'main-title' },
-        _react2.default.createElement(
-          'div',
-          { className: 'reminder-text' },
-          _react2.default.createElement(
-            'span',
-            null,
-            ' ',
-            timer
-          )
-        )
-      );
 
-      var Timer = _react2.default.createElement(
-        'div',
-        { className: 'main-title' },
-        _react2.default.createElement(
-          'div',
-          { className: 'reminder-text' },
-          _react2.default.createElement(
-            'span',
-            null,
-            'Heldlo'
-          )
-        )
-      );
+      console.log(__dirname);
+      var _state = this.state,
+          reminder = _state.reminder,
+          secondsLeft = _state.secondsLeft;
+      //  console.log('Rendered on state change')
+
+      var message = 'Time to drink water';
+      var displayContent = this.state.reminder ? _react2.default.createElement(DisplayText, { message: message }) : _react2.default.createElement(DisplayClock, { secondsLeft: secondsLeft });
 
       return _react2.default.createElement(
         'div',
         { className: 'app' },
-        this.state.ReminderText ? ReminderText : Timer
+        displayContent
       );
     }
   }]);
@@ -110,4 +142,4 @@ var App = function (_Component) {
   return App;
 }(_react.Component);
 
-(0, _reactDom.render)(_react2.default.createElement(App, { resetTime: 5, reminderTime: 3 }), document.querySelector('#root'));
+(0, _reactDom.render)(_react2.default.createElement(App, { resetTime: 5, reminderTime: 900 }), document.querySelector('#root'));
